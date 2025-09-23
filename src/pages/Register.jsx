@@ -8,10 +8,11 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            const role = "user"
             const res = await fetch("http://localhost:8080/api/auth/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username, email, password }),
+                body: JSON.stringify({ username, email, password, role }),
             });
             const data = await res.json();
             setMessage(data.message)

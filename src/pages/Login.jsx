@@ -13,11 +13,13 @@ const Login = () => {
                 body: JSON.stringify({ email, password }),
             });
             const data = await res.json();
-            setMessage(data.message)
-
+            if (res.ok) {
+                setMessage(data.message)
+                localStorage.setItem("token", data.token);
+                localStorage.setItem("role", data.user.role)
+            } else setEmail(data.message)
         } catch (err) {
             setMessage("Lỗi server")
-            console.log(err)
         }
     }
     return (

@@ -61,7 +61,6 @@ router.post("/login", async (req, res) => {
 });
 
 
-
 router.get("/users", async (req, res) => {
     try {
         const users = await User.find();
@@ -70,4 +69,18 @@ router.get("/users", async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 });
+
+router.delete("/:id", async (req, res) => {
+    try {
+        const userId = req.body;
+        const user = User.findById(userId)
+        if (!user) return res.status(404).json({ message: "khong tìm thấy người dùng" });
+
+        await User.findByIdAndDelete(userId);
+        res.json({ message: "Xoá người dùng thành công" });
+
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
+})
 export default router;

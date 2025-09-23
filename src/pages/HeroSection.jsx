@@ -1,6 +1,16 @@
 import React from 'react'
 
 const HeroSection = () => {
+    const handleClick = (e) => {
+        e.preventDefault()
+        localStorage.removeItem("token")
+        localStorage.removeItem("role")
+    }
+    const check = (e) => {
+        e.preventDefault()
+        console.log(localStorage.getItem("token"))
+        console.log(localStorage.getItem("role"))
+    }
     return (
 
         <div className="bg-white">
@@ -62,6 +72,8 @@ const HeroSection = () => {
                     />
                 </div>
             </div>
+            <button onClick={handleClick}>đăng xuất</button>
+            <button onClick={check}>check</button>
         </div>
 
     )
