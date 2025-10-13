@@ -32,16 +32,19 @@ export const checkAdmin = (req, res, next) => {
     }
 };
 
+import Post from "../models/Post.js";
+
 export const checkAuthorOrAdmin = async (req, res, next) => {
     try {
         const post = await Post.findById(req.params.id);
-        if (!post) return res.status(404).json({ message: "Post không tồn tại" });
-
-        const userId = req.user.id;   // từ middleware checkToken
+        if (!post) {
+            return res.status(404).json({ message: "Post không tồn tại" });
+        }
+        const userId = req.user.id;
         const userRole = req.user.role;
 
         if (userRole === "admin" || post.author.toString() === userId) {
-            return next(); // cho phép tiếp tục
+            return next();
         } else {
             return res.status(403).json({ message: "Bạn không có quyền thực hiện hành động này" });
         }

@@ -3,8 +3,8 @@ import Post from "../models/Post.js";
 // Tạo bài viết
 export const createPost = async (req, res) => {
     try {
-        const { title, content, image, author, likes, comments } = req.body;
-        const newPost = new Post({ title, content, image, author, likes, comments });
+        const { title, content, image, tag, author, likes, comments } = req.body;
+        const newPost = new Post({ title, content, image, tag, author, likes, comments });
         await newPost.save();
         res.status(201).json({ message: "Tạo post thành công", post: newPost });
     } catch (err) {
@@ -12,15 +12,24 @@ export const createPost = async (req, res) => {
     }
 };
 
-// Lấy tất cả bài viết
+// Lấy tất cả bài viết, lay theo tag
 export const getPosts = async (req, res) => {
     try {
-        const posts = await Post.find();
+        const filter = {};
+        if (req.query.tag) {
+            filter.tag = req.query.tag; // lọc theo tag nếu có query
+        }
+
+        const posts = await Post.find(filter)
+            .populate("author", "username"); // populate author và chỉ lấy username
+
         res.json(posts);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 };
+
+
 // lay 1 bai viet
 export const getPostById = async (req, res) => {
     try {
@@ -46,10 +55,10 @@ export const deletePost = async (req, res) => {
 // Cập nhật bài viết
 export const updatePost = async (req, res) => {
     try {
-        const { title, content, image, likes, comments } = req.body;
+        const { title, content, image, tag, author, likes, comments } = req.body;
         const updatedPost = await Post.findByIdAndUpdate(
             req.params.id,
-            { title, content, image, likes, comments },
+            { title, content, image, tag, author, likes, comments },
             { new: true }
         );
         if (!updatedPost) return res.status(404).json({ message: "Post không tồn tại" });

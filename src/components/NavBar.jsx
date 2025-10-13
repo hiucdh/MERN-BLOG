@@ -1,44 +1,145 @@
-import React from 'react'
+import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
+
+const Tag = ({ color, icon, label }) => {
+    const colors = {
+        orange: "bg-orange-50 text-orange-800",
+        blue: "bg-blue-50 text-blue-700",
+        green: "bg-green-50 text-green-800",
+    };
+
+    return (
+        <div
+            className={`flex items-center gap-2 px-2 py-1 rounded-full font-medium text-xs ${colors[color]} hover:brightness-105 transition`}
+        >
+            {icon}
+            <span>{label}</span>
+        </div>
+    );
+};
 
 const NavBar = () => {
+    const [isOpen, setIsOpen] = useState(false); // state cho mobile menu
+
     return (
+        <header className="relative w-full bg-white shadow">
+            <nav className="max-w-[85rem] w-full mx-auto px-4 sm:flex sm:items-center sm:justify-between py-3">
+                {/* Brand + Mobile button */}
+                <div className="flex items-center justify-between">
+                    <NavLink
+                        to="/"
+                        className="flex-none text-xl font-semibold focus:outline-none focus:opacity-80"
+                    >
+                        Mern-Blog
+                    </NavLink>
 
-
-        <nav class="bg-white border-gray-200 dark:bg-gray-900">
-            <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-                <a href="https://flowbite.com/" class="flex items-center space-x-3 rtl:space-x-reverse">
-                    <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="Flowbite Logo" />
-                    <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
-                </a>
-                <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">
-                    <span class="sr-only">Open main menu</span>
-                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15" />
-                    </svg>
-                </button>
-                <div class="hidden w-full md:block md:w-auto" id="navbar-default">
-                    <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-                        <li>
-                            <a href="#" class="block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500" aria-current="page">Home</a>
-                        </li>
-                        <li>
-                            <a href="#" class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">About</a>
-                        </li>
-                        <li>
-                            <a href="#" class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Services</a>
-                        </li>
-                        <li>
-                            <a href="#" class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Pricing</a>
-                        </li>
-                        <li>
-                            <a href="#" class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Contact</a>
-                        </li>
-                    </ul>
+                    {/* Mobile menu button */}
+                    <div className="sm:hidden">
+                        <button
+                            onClick={() => setIsOpen(!isOpen)}
+                            type="button"
+                            className="flex justify-center items-center gap-x-2 rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none"
+                        >
+                            <span className="sr-only">Toggle navigation</span>
+                            {/* icon hamburger */}
+                            <svg
+                                className="w-6 h-6"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M4 6h16M4 12h16M4 18h16"
+                                />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
-            </div>
-        </nav>
 
-    )
-}
+                {/* Menu + Tags */}
+                <div
+                    className={`sm:flex flex-1 items-center justify-between transition-all duration-300 ${isOpen ? "block" : "hidden"
+                        }`}
+                >
+                    {/* Tags bên trái */}
+                    <div className="flex items-center gap-2 ml-4 mb-2 sm:mb-0 flex-wrap">
+                        <a href="http://localhost:5173/" target="_blank"
+                            rel="noopener noreferrer">
+                            <Tag color="orange" label="Shop" icon={<ShopIcon />} />
+                        </a>
+                        <a href="https://github.com/hiucdh/MERN-BLOG" target="_blank"
+                            rel="noopener noreferrer">
+                            <Tag color="blue" label="Github" icon={<GithubIcon />} />
+                        </a>
+                        <a href="https://docs.google.com/document/d/14XG5hkCbMcPIzjoPYbhmRXOHIBSmLQE7_FkAvmZNYMw/edit?usp=sharing" target="_blank"
+                            rel="noopener noreferrer">
+                            <Tag color="green" label="Docs" icon={<DocsIcon />} />
+                        </a>
 
-export default NavBar
+                    </div>
+
+                    {/* Menu links bên phải */}
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
+                        <NavLink
+                            to="/posts"
+                            className={({ isActive }) =>
+                                `font-medium ${isActive ? "text-blue-600" : "text-gray-800 hover:text-gray-600"}`
+                            }
+                        >
+                            Bài Viết
+                        </NavLink>
+                        <NavLink
+                            to="/about"
+                            className={({ isActive }) =>
+                                `font-medium ${isActive ? "text-blue-600" : "text-gray-800 hover:text-gray-600"}`
+                            }
+                        >
+                            Giới Thiệu
+                        </NavLink>
+                        <NavLink
+                            to="/register"
+                            className={({ isActive }) =>
+                                `font-medium ${isActive ? "text-blue-600" : "text-gray-800 hover:text-gray-600"}`
+                            }
+                        >
+                            Đăng ký
+                        </NavLink>
+                        <NavLink
+                            to="/login"
+                            className={({ isActive }) =>
+                                `font-medium ${isActive ? "text-blue-600" : "text-gray-800 hover:text-gray-600"}`
+                            }
+                        >
+                            Đăng Nhập
+                        </NavLink>
+                    </div>
+                </div>
+            </nav>
+        </header>
+    );
+};
+
+export default NavBar;
+
+// Thay thế icon SVG đúng chỗ
+const ShopIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.6 8H19M7 13L5.4 5M9 21a1 1 0 100-2 1 1 0 000 2zm10 0a1 1 0 100-2 1 1 0 000 2z" />
+    </svg>
+);
+
+const GithubIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4 8 5.79 8 8s1.79 4 4 4zM2 20h20M2 20c0-4 4-8 10-8s10 4 10 8M2 20h20" />
+    </svg>
+);
+
+const DocsIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 20H5a2 2 0 01-2-2V7a2 2 0 012-2h5l2 2h7a2 2 0 012 2v9a2 2 0 01-2 2z" />
+    </svg>
+);

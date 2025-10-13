@@ -5,6 +5,7 @@ import HeroSection from './pages/HeroSection.jsx'
 import About from './pages/About.jsx'
 import Login from './pages/Login.jsx'
 import Register from './pages/Register.jsx'
+import Posts from './pages/Posts.jsx'
 const App = () => {
   return (
     <Routes>
@@ -12,6 +13,7 @@ const App = () => {
         <Route index element={<HeroSection />} />
         <Route path="about" element={<About />} />
         <Route path="login" element={<Login />} />
+        <Route path="posts" element={<Posts />} />
         <Route path="register" element={<Register />} />
       </Route>
     </Routes>
