@@ -1,54 +1,28 @@
-import React, { useEffect, useRef, useState } from "react";
-import axios from "axios";
+import React, { useRef } from "react";
+import { useMusicPosts } from "../../hooks/useMusicPosts";
+import { useSlider } from "../../hooks/useSlider";
+import { useContainerWidth } from "../../hooks/useContainerWidth";
 
 const Thumbnail = () => {
     const galleryRef = useRef(null);
-    const [index, setIndex] = useState(0);
-    const [containerWidth, setContainerWidth] = useState(0);
-    const [musicPosts, setMusicPosts] = useState([]);
 
-    const next = () => setIndex((prev) => Math.min(prev + 1, musicPosts.length - 1));
-    const prev = () => setIndex((prev) => Math.max(prev - 1, 0));
-    const goto = (i) => setIndex(i);
+    // Sử dụng các hooks
+    const { musicPosts, loading, error } = useMusicPosts();
+    const { index, next, prev, goto } = useSlider(musicPosts.length);
+    const containerWidth = useContainerWidth(galleryRef);
 
-    useEffect(() => {
-        axios.get("http://localhost:8080/api/posts?tag=Âm nhạc")
-            .then((res) => {
-                console.log(res.data);
-                setMusicPosts(res.data);
-            })
-            .catch((err) => console.error(err));
-    }, []);
-
-    useEffect(() => {
-        const handleKey = (e) => {
-            if (e.key === "ArrowRight") next();
-            if (e.key === "ArrowLeft") prev();
-        };
-        window.addEventListener("keyup", handleKey);
-        return () => window.removeEventListener("keyup", handleKey);
-    }, [next, prev]);
-
-    useEffect(() => {
-        const updateWidth = () => {
-            if (galleryRef.current) {
-                setContainerWidth(galleryRef.current.clientWidth);
-            }
-        };
-        updateWidth();
-        window.addEventListener("resize", updateWidth);
-        return () => window.removeEventListener("resize", updateWidth);
-    }, []);
-
-    if (musicPosts.length === 0) {
-        return (
-            <div className="flex justify-center items-center h-96">
-                <p>Đang tải bài viết...</p>
-            </div>
-        );
+    if (loading) {
+        return <div className="flex justify-center items-center h-96"><p>Đang tải bài viết...</p></div>;
     }
 
-    // Lấy bài viết hiện tại dựa trên index
+    if (error) {
+        return <div className="flex justify-center items-center h-96"><p>Đã xảy ra lỗi khi tải dữ liệu.</p></div>;
+    }
+
+    if (musicPosts.length === 0) {
+        return <div className="flex justify-center items-center h-96"><p>Không có bài viết nào về Âm nhạc.</p></div>;
+    }
+
     const currentPost = musicPosts[index];
 
     return (

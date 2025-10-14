@@ -1,12 +1,12 @@
 import React from 'react'
-import Thumbnail from '../components/Thumbnail'
-import Content from '../components/Content'
+import Thumbnail from '../components/HomePage/Thumbnail'
+import PostList from '../components/HomePage/PostList'
 
 const HeroSection = () => {
     return (
         <div>
             <Thumbnail />
-            <Content />
+            <PostList />
         </div>
     )
 }
