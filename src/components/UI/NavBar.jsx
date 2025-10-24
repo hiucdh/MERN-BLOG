@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-
+import { AuthContext } from "../../context/AuthContext";
 const Tag = ({ color, icon, label }) => {
     const colors = {
         orange: "bg-orange-50 text-orange-800",
@@ -20,7 +20,12 @@ const Tag = ({ color, icon, label }) => {
 
 const NavBar = () => {
     const [isOpen, setIsOpen] = useState(false); // state cho mobile menu
-
+    const { token } = React.useContext(AuthContext);
+    const { user } = React.useContext(AuthContext);
+    const { logout } = React.useContext(AuthContext);
+    const handleCheckout = () => {
+        logout();
+    }
     return (
         <header className="relative w-full bg-white shadow">
             <nav className="max-w-[85rem] w-full mx-auto px-4 sm:flex sm:items-center sm:justify-between py-3">
@@ -85,12 +90,12 @@ const NavBar = () => {
                     {/* Menu links bên phải */}
                     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
                         <NavLink
-                            to="/posts"
+                            to="/post-create"
                             className={({ isActive }) =>
                                 `font-medium ${isActive ? "text-blue-600" : "text-gray-800 hover:text-gray-600"}`
                             }
                         >
-                            Bài Viết
+                            Viết Bài
                         </NavLink>
                         <NavLink
                             to="/about"
@@ -100,22 +105,40 @@ const NavBar = () => {
                         >
                             Giới Thiệu
                         </NavLink>
-                        <NavLink
-                            to="/register"
+                        {token ? (
+                            <NavLink
+                                to="#"
+                                className={({ isActive }) =>
+                                    `font-medium ${isActive ? "text-blue-600" : "text-gray-800 hover:text-gray-600"}`
+                                }
+                            >
+                                Xin chào {user?.username}
+                            </NavLink>
+                        ) : (
+                            <NavLink
+                                to="/register"
+                                className={({ isActive }) =>
+                                    `font-medium ${isActive ? "text-blue-600" : "text-gray-800 hover:text-gray-600"}`
+                                }
+                            >
+                                Đăng ký
+                            </NavLink>
+                        )}
+
+                        {token ? (<NavLink onClick={handleCheckout} to="#"
                             className={({ isActive }) =>
-                                `font-medium ${isActive ? "text-blue-600" : "text-gray-800 hover:text-gray-600"}`
-                            }
-                        >
-                            Đăng ký
-                        </NavLink>
-                        <NavLink
-                            to="/login"
-                            className={({ isActive }) =>
-                                `font-medium ${isActive ? "text-blue-600" : "text-gray-800 hover:text-gray-600"}`
-                            }
-                        >
-                            Đăng Nhập
-                        </NavLink>
+                                `font-medium cursor-pointer ${isActive
+                                    ? "text-gray-800 hover:text-gray-600"
+                                    : "text-gray-800 hover:text-gray-600"
+                                }`
+                            }>Đăng Xuất</NavLink>) : (<NavLink
+                                to="/login"
+                                className={({ isActive }) =>
+                                    `font-medium ${isActive ? "text-blue-600" : "text-gray-800 hover:text-gray-600"}`
+                                }
+                            >
+                                Đăng Nhập
+                            </NavLink>)}
                     </div>
                 </div>
             </nav>

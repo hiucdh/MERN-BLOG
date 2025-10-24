@@ -79,14 +79,22 @@ export const getUsers = async (req, res) => {
 
 export const getUserById = async (req, res) => {
     try {
-        const { id } = req.params;
+        let { id } = req.params;
+
+        // Nếu id là "me" → lấy từ token
+        if (id === "me") {
+            id = req.user.id;
+        }
         const user = await User.findById(id);
+
         if (!user) return res.status(404).json({ message: "Không tìm thấy người dùng" });
+
         res.json(user);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-}
+};
+
 
 // Xóa user
 export const deleteUser = async (req, res) => {
@@ -97,6 +105,16 @@ export const deleteUser = async (req, res) => {
 
         await User.findByIdAndDelete(id);
         res.json({ message: "Xoá người dùng thành công" });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+
+export const getCurrentUser = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id).select("-password"); // không trả password
+        if (!user) return res.status(404).json({ message: "Không tìm thấy người dùng" });
+        res.json(user);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
