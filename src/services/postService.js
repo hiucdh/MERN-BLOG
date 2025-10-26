@@ -36,15 +36,20 @@ export const getPostById = async (postId) => {
 };
 
 // --- 2. TẠO, CẬP NHẬT, XÓA (CRUD) ---
-export const createPost = async (postData) => {
+export const createPost = async (postData, token) => {
     try {
-        const response = await postApiClient.post("/posts", postData);
-        return response.data.post;
+        const response = await postApiClient.post("/posts", postData, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data; // hoặc response.data.post tùy backend
     } catch (error) {
         console.error("Lỗi khi tạo bài viết:", error);
         throw error;
     }
 };
+
 
 export const updatePost = async (postId, updateData) => {
     try {

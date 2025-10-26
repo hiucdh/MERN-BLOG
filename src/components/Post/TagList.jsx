@@ -1,6 +1,5 @@
-
+import { Link } from "react-router-dom";
 import React from "react";
-
 const TagList = ({ tags }) => {
     return (
         <div>
@@ -8,12 +7,12 @@ const TagList = ({ tags }) => {
             <ul className="flex flex-wrap gap-4">
                 {tags.map((tag) => (
                     <li key={tag}>
-                        <a
-                            href={`http://localhost:5173/posts?tag=${encodeURIComponent(tag)}`}
+                        <Link
+                            to={`/tag/${encodeURIComponent(tag)}`}
                             className="px-4 py-2 bg-blue-100 text-blue-800 rounded-full hover:bg-blue-200 transition"
                         >
                             {tag}
-                        </a>
+                        </Link>
                     </li>
                 ))}
             </ul>

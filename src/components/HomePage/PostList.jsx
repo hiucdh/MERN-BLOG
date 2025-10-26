@@ -6,7 +6,7 @@ import PostCard from "../Post/PostCard"; // Dùng cho phần Bài viết nổi b
 import anhBacHo from "../../assets/BacHo.png"; // Đường dẫn ảnh quảng cáo
 
 // Tags nên được định nghĩa ngoài component để tránh việc re-render không cần thiết
-const TAGS = [
+export const TAGS = [
     "Quan điểm - Tranh luận", "Khoa học - Công nghệ", "Tài chính", "Thinking Out Loud",
     "Tâm lý học", "Âm nhạc", "Sự kiện Spiderum", "Điêu khắc Kiến trúc Mỹ thuật",
     "Người trong muôn nghề", "Game", "The Brands", "Giáo dục", "Thể thao",
