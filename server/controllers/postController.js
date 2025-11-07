@@ -137,3 +137,20 @@ export const approvePost = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 };
+
+export const getPostByAuthor = async (req, res) => {
+    try {
+        const { authorId } = req.params;
+        if (!authorId) {
+            return res.status(400).json({ message: "Thiếu actorId" });
+        }
+        const posts = await Post.find({ author: authorId });
+        return res.json({
+            message: "Lấy bài viết thành công",
+            posts
+        });
+
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+}
