@@ -8,7 +8,8 @@ import {
     toggleLike,
     addComment,
     deleteComment,
-    approvePost
+    approvePost,
+    getPostByAuthor
 } from "../controllers/postController.js";
 
 import { checkToken, checkAuthorOrAdmin, checkAdmin } from "../middleware/authMiddleware.js";
@@ -27,5 +28,5 @@ router.post("/:id/like", checkToken, toggleLike);
 router.post("/:id/comment", checkToken, addComment);
 router.delete("/:postId/comment/:commentId", checkToken, checkAuthorOrAdmin, deleteComment);
 router.put("/:id/approve", checkToken, checkAdmin, approvePost); // cho phep admin duyet bai
-
+router.get("/author/:authorId", getPostByAuthor); // lay bai viet theo tac ga
 export default router;
