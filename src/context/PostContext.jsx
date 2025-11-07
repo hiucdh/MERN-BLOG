@@ -12,7 +12,7 @@ export const PostProvider = ({ children }) => {
         const fetchPost = async () => {
             try {
                 const cachedPosts = localStorage.getItem("posts");
-                console.log("Lấy bài viết thành công:", posts);
+
                 if (cachedPosts) return;
                 const postData = await getPosts();
                 setPosts(postData);
