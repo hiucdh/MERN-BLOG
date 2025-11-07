@@ -15,13 +15,13 @@ const PostCard = ({ post }) => {
             >
                 {/* Ảnh bên trái */}
                 <div className="w-28 h-28 flex-shrink-0 overflow-hidden rounded-lg">
-                    <img
+                    {/* <img
                         loading="lazy"
                         src={post.image || '/placeholder.png'}
                         alt={post.title}
                         onError={(e) => { e.target.src = '/placeholder.png'; }}
                         className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                    />
+                    /> */}
                 </div>
 
                 {/* Nội dung bên phải */}

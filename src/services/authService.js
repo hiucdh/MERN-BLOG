@@ -15,9 +15,20 @@ authApiClient.interceptors.request.use((config) => {
     return config;
 });
 // lay user: phai token admin moi duoc
-export const getUsers = async (tag = null) => {
+export const getUsers = async (token) => {
+    /* 
+    const response = await postApiClient.post("/posts", postData, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        */
     try {
-        const response = await authApiClient.get(`/users`);
+        const response = await authApiClient.get(`/users`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
         return response.data;
     } catch (error) {
         console.error("Lỗi khi lấy danh sách người dùng:", error);
@@ -58,11 +69,41 @@ export const login = async (credentials) => {
         throw error;
     }
 }
+//xoa user
+const deleteUser = async (userId, token) => {
+    try {
+        const response = await authApiClient.delete(`/${userId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error(`Lỗi khi xoá người dùng ID ${userId}:`, error);
+        throw error;
+    }
+}
+//chinh sua user
+const editUser = async (userId, userData, token) => {
+    try {
+        const response = await authApiClient.put(`/${userId}`, userData, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error(`Lỗi khi chỉnh sửa người dùng ID ${userId}:`, error);
+        throw error;
+    }
+}
 const authService = {
     login,
+    editUser,
     register,
     getUsers,
     getUserById,
+    deleteUser
 };
 
 export { authService };

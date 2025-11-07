@@ -7,8 +7,9 @@ export const AuthProvider = ({ children }) => {
 
     // State lưu thông tin người dùng và trạng thái
 
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState(localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null);
     const [token, setToken] = useState(localStorage.getItem("token") || null);
+    const [role, setRole] = useState(localStorage.getItem("role") || null);
     const [loading, setLoading] = useState(true); // kiểm tra đang tải dữ liệu đăng nhập
     // Khi có token → tự động fetch thông tin user
     useEffect(() => {
@@ -21,6 +22,7 @@ export const AuthProvider = ({ children }) => {
                 // gọi API để lấy thông tin user hiện tại
                 const userData = await authService.getUserById("me");
                 setUser(userData);
+                setRole(userData.role);
             } catch (error) {
                 console.error("Token không hợp lệ hoặc hết hạn:", error);
                 logout();
@@ -39,8 +41,12 @@ export const AuthProvider = ({ children }) => {
             // Giả sử backend trả về { token, user }
             setToken(data.token);
             setUser(data.user);
+            setRole(data.user.role);
+            console.log("Đăng nhập thành công, vai trò:", data.user.role);
             localStorage.setItem("token", data.token);
-            return { success: true };
+            localStorage.setItem("user", JSON.stringify(data.user));
+            localStorage.setItem("role", data.user.role);
+            return { success: true, role: data.user.role, token: data.token };
         } catch (error) {
             console.error("Lỗi đăng nhập:", error);
             return { success: false, message: error.response?.data?.message || "Đăng nhập thất bại" };
@@ -65,6 +71,8 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
         setToken(null);
         localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        localStorage.removeItem("role");
     };
 
 
@@ -75,6 +83,7 @@ export const AuthProvider = ({ children }) => {
             value={{
                 user,
                 token,
+                role,
                 loading,
                 login,
                 logout,

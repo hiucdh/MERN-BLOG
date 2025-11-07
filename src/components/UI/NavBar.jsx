@@ -124,7 +124,14 @@ const NavBar = () => {
                                 Đăng ký
                             </NavLink>
                         )}
-
+                        {token && (<NavLink
+                            to="/profile"
+                            className={({ isActive }) =>
+                                `font-medium ${isActive ? "text-blue-600" : "text-gray-800 hover:text-gray-600"}`
+                            }
+                        >
+                            Hồ Sơ
+                        </NavLink>)}
                         {token ? (<NavLink onClick={handleCheckout} to="#"
                             className={({ isActive }) =>
                                 `font-medium cursor-pointer ${isActive

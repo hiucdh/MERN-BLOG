@@ -18,7 +18,12 @@ const Login = () => {
 
         if (result?.success) {
             setMessage("Đăng nhập thành công!");
-            navigate("/");
+            if (result.role === "admin" && result.token) {
+                navigate("/admin")
+            } else {
+                navigate("/")
+            } // bat duoc role cua context tra ve
+
         } else {
             setMessage("Đăng nhập thất bại. Kiểm tra lại email hoặc mật khẩu.");
         }

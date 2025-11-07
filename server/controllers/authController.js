@@ -102,7 +102,6 @@ export const deleteUser = async (req, res) => {
         const { id } = req.params;
         const user = await User.findById(id);
         if (!user) return res.status(404).json({ message: "Không tìm thấy người dùng" });
-
         await User.findByIdAndDelete(id);
         res.json({ message: "Xoá người dùng thành công" });
     } catch (err) {
@@ -110,6 +109,25 @@ export const deleteUser = async (req, res) => {
     }
 };
 
+//chỉnh sửa user
+export const editUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { username, role } = req.body;
+
+        const user = await User.findById(id);
+        if (!user) return res.status(404).json({ message: "Không tìm thấy người dùng" });
+
+        // Cập nhật thông tin
+        if (username) user.username = username;
+        if (role) user.role = role;
+
+        await user.save();
+        res.json({ message: "Cập nhật người dùng thành công", user });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
 export const getCurrentUser = async (req, res) => {
     try {
         const user = await User.findById(req.user.id).select("-password"); // không trả password

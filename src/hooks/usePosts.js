@@ -1,27 +1,17 @@
-// client/src/hooks/usePosts.js
 
-import { useState, useEffect } from "react";
-import { getPosts } from "../services/postService";
-
+import { useState, useEffect, useContext } from "react";
+import { PostContext } from "../context/PostContext";
 export const usePosts = () => {
-    const [posts, setPosts] = useState([]);
-    const [musicPosts, setMusicPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const { posts } = useContext(PostContext);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // 1. Gộp tất cả các promise vào Promise.all để chạy SONG SONG
-                const [allData, musicData] = await Promise.all([
-                    getPosts(),
-                    getPosts("Âm nhạc")
-                ]);
-
-                // 2. CHỈ setState một lần duy nhất sau khi lấy được tất cả dữ liệu
-                // Điều này giảm thiểu re-render và tránh lỗi lag
-                setPosts(allData);
-                setMusicPosts(musicData);
+                if (!posts || posts.length === 0) {
+                    setError("Chưa có bài viết nào được tải.");
+                }
 
             } catch (err) {
                 setError("Lỗi khi tải dữ liệu bài viết.");
@@ -32,7 +22,7 @@ export const usePosts = () => {
         };
 
         fetchData();
-    }, []); // Chỉ chạy một lần khi component mount
+    }, [posts]);
 
-    return { posts, musicPosts, loading, error };
+    return { posts, loading, error };
 };

@@ -4,7 +4,6 @@ import PostListSection from "../Post/PostListSection";
 import TagList from "../Post/TagList";
 import PostCard from "../Post/PostCard"; // Dùng cho phần Bài viết nổi bật
 import anhBacHo from "../../assets/BacHo.png"; // Đường dẫn ảnh quảng cáo
-
 // Tags nên được định nghĩa ngoài component để tránh việc re-render không cần thiết
 export const TAGS = [
     "Quan điểm - Tranh luận", "Khoa học - Công nghệ", "Tài chính", "Thinking Out Loud",
@@ -17,11 +16,11 @@ export const TAGS = [
 
 const PostList = () => {
     // Sử dụng custom hook để lấy dữ liệu
-    const { posts, musicPosts, loading, error } = usePosts();
+    const { loading, error, posts } = usePosts();
+
 
     // Tính toán dữ liệu hiển thị (luôn dùng slice ở đây)
     const displayedPosts = posts.slice(0, 4);
-    const displayedMusicPosts = musicPosts.slice(0, 4);
     const tenFeaturedPosts = posts.slice(0, 10);
 
     if (loading) return <div className="text-center p-8">Đang tải dữ liệu...</div>;
@@ -29,11 +28,7 @@ const PostList = () => {
 
     return (
         <div className="max-w-6xl mx-auto p-6">
-
-            {/* 1. KHỐI DANH SÁCH BÀI VIẾT (4 bài đầu) */}
             <PostListSection title="Danh sách bài viết" posts={displayedPosts} />
-
-            {/* Quảng cáo (hoặc banner) */}
             <a
                 href="https://www.youtube.com/playlist?list=PLmyF-BPWWPTIplH6faswUafil3eh9ApiX"
                 target="_blank"
@@ -47,11 +42,7 @@ const PostList = () => {
                 />
             </a>
 
-            {/* 2. KHỐI CHỦ ĐỀ ÂM NHẠC */}
-            {/* Sử dụng PostListSection với title và class riêng */}
-            <PostListSection title="Chủ đề âm nhạc" posts={displayedMusicPosts} />
 
-            {/* 3. KHỐI BÀI VIẾT NỔI BẬT VÀ TAGS (Bố cục 2/3 - 1/3) */}
             <div className="flex flex-col lg:flex-row gap-8 mt-10">
 
                 {/* Cột 1: BÀI VIẾT NỔI BẬT */}

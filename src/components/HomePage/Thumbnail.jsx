@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { useMusicPosts } from "../../hooks/useMusicPosts";
 import { useSlider } from "../../hooks/useSlider";
 import { useContainerWidth } from "../../hooks/useContainerWidth";
-
+import { Link } from "react-router";
 const Thumbnail = () => {
     const galleryRef = useRef(null);
 
@@ -66,9 +66,10 @@ const Thumbnail = () => {
                         <div className="md:w-2/3 flex justify-center items-center mb-4 md:mb-0">
                             <img src={currentPost.image} alt={currentPost.title} className="max-h-80 object-contain rounded" />
                         </div>
+
                         <div className="md:w-1/3 flex flex-col justify-center text-center md:text-left">
-                            <h2 className="text-2xl font-bold mb-3">{currentPost.title}</h2>
-                            <p className="text-gray-700 text-sm leading-relaxed">{currentPost.content}</p>
+                            <Link to={`/posts/${currentPost._id}`}><h2 className="text-2xl font-bold mb-3">{currentPost.title}</h2>
+                                <p className="text-gray-700 text-sm leading-relaxed">{currentPost.content}</p></Link>
                             <div className="mt-3 flex gap-2 flex-wrap justify-center md:justify-start">
                                 {index > 0 && (
                                     <button
