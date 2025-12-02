@@ -122,14 +122,17 @@ export const deleteComment = async (req, res) => {
 export const approvePost = async (req, res) => {
     try {
         const { status } = req.body; // "approved" hoặc "rejected"
+
         if (!["approved", "rejected"].includes(status)) {
             return res.status(400).json({ message: "Status không hợp lệ" });
         }
 
         const post = await Post.findById(req.params.id);
+
         if (!post) return res.status(404).json({ message: "Post không tồn tại" });
 
         post.status = status;
+        console.log(post)
         await post.save();
 
         res.json({ message: `Bài viết đã được ${status}`, post });

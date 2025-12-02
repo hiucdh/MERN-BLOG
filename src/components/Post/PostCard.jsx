@@ -14,15 +14,15 @@ const PostCard = ({ post }) => {
                 className="flex items-start gap-4 p-5 border rounded-xl shadow-sm hover:shadow-md transition duration-200 bg-white"
             >
                 {/* Ảnh bên trái */}
-                <div className="w-28 h-28 flex-shrink-0 overflow-hidden rounded-lg">
-                    {/* <img
+                {/* <div className="w-28 h-28 flex-shrink-0 overflow-hidden rounded-lg">
+                    <img
                         loading="lazy"
                         src={post.image || '/placeholder.png'}
                         alt={post.title}
                         onError={(e) => { e.target.src = '/placeholder.png'; }}
                         className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                    /> */}
-                </div>
+                    />
+                </div> */}
 
                 {/* Nội dung bên phải */}
                 <div className="flex flex-col justify-between">

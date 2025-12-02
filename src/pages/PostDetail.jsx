@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { getPostById } from "../services/postService";
-
+import { AuthContext } from "../context/AuthContext";
+import { PostContext } from "../context/PostContext";
 const PostDetail = () => {
     const { id } = useParams();
     const location = useLocation();
@@ -9,11 +10,12 @@ const PostDetail = () => {
 
     // Nếu người dùng đến từ PostCard thì location.state sẽ có sẵn dữ liệu
     const initialPost = location.state || null;
+    const { role, token } = React.useContext(AuthContext)
 
     const [post, setPost] = useState(initialPost);
     const [loading, setLoading] = useState(!initialPost);
     const [error, setError] = useState(null);
-
+    const { approvePost } = React.useContext(PostContext)
     useEffect(() => {
         // Nếu chưa có post (vào thẳng URL), mới cần gọi API
         if (!post) {
@@ -61,7 +63,7 @@ const PostDetail = () => {
     }
 
     const authorName = post.author?.username || "Ẩn danh";
-
+    console.log(post)
     return (
         <div className="max-w-3xl mx-auto p-6 bg-white rounded-xl shadow-md mt-6">
             {/* Ảnh */}
@@ -100,6 +102,44 @@ const PostDetail = () => {
                     ← Quay lại
                 </button>
             </div>
+            {role === "admin" && post.status === "pending" && (
+                <div className="mt-6 flex gap-4">
+                    <button
+                        onClick={async () => {
+                            const result = await approvePost(post._id, "approved", token);
+
+                            if (result?.success) {
+                                // Cập nhật UI
+                                setPost(prev => ({
+                                    ...prev,
+                                    status: "approved"
+                                }));
+                            }
+                        }}
+                        className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition"
+                    >
+                        Duyệt
+                    </button>
+
+                    <button
+                        onClick={async () => {
+                            const result = await approvePost(post._id, "rejected", token);
+
+                            if (result?.success) {
+                                // Cập nhật UI
+                                setPost(prev => ({
+                                    ...prev,
+                                    status: "rejected"
+                                }));
+                            }
+                        }}
+                        className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
+                    >
+                        Không duyệt
+                    </button>
+                </div>
+            )}
+
         </div>
     );
 };

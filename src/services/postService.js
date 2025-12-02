@@ -111,9 +111,15 @@ export const deleteComment = async (postId, commentId) => {
 };
 
 // --- 4. CHỨC NĂNG QUẢN TRỊ (ADMIN) ---
-export const approvePost = async (postId, status) => {
+export const approvePost = async (postId, status, token) => {
     try {
-        const response = await postApiClient.put(`/posts/${postId}/approve`, { status });
+        const response = await postApiClient.put(`/posts/${postId}/approve`, { status },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
         return response.data.post;
     } catch (error) {
         console.error(`Lỗi khi phê duyệt bài viết ID ${postId}:`, error);
