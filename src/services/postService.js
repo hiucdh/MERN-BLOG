@@ -126,3 +126,13 @@ export const approvePost = async (postId, status, token) => {
         throw error;
     }
 };
+// --- 5. LẤY BÀI VIẾT THEO TÁC GIẢ ---
+export const getPostByAuthor = async (authorId) => {
+    try {
+        const response = await postApiClient.get(`/posts/author/${authorId}`);
+        return response.data;
+    } catch (error) {
+        console.error(`Lỗi khi lấy bài viết của tác giả ID ${authorId}:`, error);
+        throw error;
+    }
+};
